@@ -1,0 +1,29 @@
+{
+  "extends": ["airbnb-typescript", "prettier", "prettier/@typescript-eslint"],
+  "plugins": [
+    "prettier"
+  ],
+  "rules": {
+    "prettier/prettier": "error",
+    "react/prop-types": 0,
+    "react/jsx-wrap-multilines": "off",
+    "no-use-before-define": 0,
+    "@typescript-eslint/no-use-before-define": 0,
+    "no-console": "off",
+    "import/prefer-default-export": "off",
+    "no-param-reassign": "off"
+  },
+  "env": {
+    "browser": true
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["src"]
+      }
+    }
+  },
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  }
+}

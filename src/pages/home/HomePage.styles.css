@@ -1,0 +1,13 @@
+html,
+body,
+#root,
+.presentation {
+  width: 100%;
+  height: 100%;
+}
+
+.presentation {
+  height: calc(100% - 64px);
+  background: url('assets/home_page_bg.jpg');
+  background-size: cover;
+}
