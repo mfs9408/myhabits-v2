@@ -7,8 +7,8 @@ import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
 import ErrorIcon from '@material-ui/icons/Error';
 import UseStyles from './TaskButton.style';
 import ProgressForm from '../ProgressForm/ProgressForm';
-import PartiallyMarksArray from '../ProgressForm/PartiallyMarksArray';
-import OverDoneMarksArray from '../ProgressForm/OverDoneMarksArray';
+import PartiallyMarksArray from '../ProgressForm/helpers/PartiallyMarksArray';
+import OverDoneMarksArray from '../ProgressForm/helpers/OverDoneMarksArray';
 
 // @ts-ignore
 const TaskButton = ({ pass }) => {
