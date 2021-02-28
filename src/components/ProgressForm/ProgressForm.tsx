@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 
 const ProgressForm = ({
-  pass,
+  id,
   description,
   isDone,
   min,
@@ -28,7 +28,7 @@ const ProgressForm = ({
     setOpen(false);
   };
   const handleAccept = () => {
-    console.log({ pass, value, isDone, currentDate });
+    console.log({ id, value, isDone, currentDate });
     setOpen(false);
   };
 

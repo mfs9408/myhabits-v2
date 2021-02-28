@@ -5,14 +5,31 @@ import Typography from '@material-ui/core/Typography';
 import MoodBadIcon from '@material-ui/icons/MoodBad';
 import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
 import ErrorIcon from '@material-ui/icons/Error';
+import Snackbar from '@material-ui/core/Snackbar';
+import { Alert } from '@material-ui/lab';
 import UseStyles from './TaskButton.style';
 import ProgressForm from '../ProgressForm/ProgressForm';
 import PartiallyMarksArray from '../ProgressForm/helpers/PartiallyMarksArray';
 import OverDoneMarksArray from '../ProgressForm/helpers/OverDoneMarksArray';
+import { post } from '../../Api';
 
-// @ts-ignore
-const TaskButton = ({ pass }) => {
+type TaskButtonProperty = {
+  id: number;
+  disabled: boolean;
+};
+
+const TaskButton = ({ id, disabled }: TaskButtonProperty) => {
   const classes = UseStyles();
+
+  const [successAlert, setSuccessAlert] = useState<boolean>(false);
+  const [enabledButtons, setEnabledButtons] = useState<boolean>(disabled);
+
+  const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSuccessAlert(false);
+  };
 
   const [openPartially, setOpenPartially] = useState(false);
   const handleClickOpenPartially = () => {
@@ -29,17 +46,38 @@ const TaskButton = ({ pass }) => {
 
   return (
     <>
+      <Snackbar
+        open={successAlert}
+        autoHideDuration={2500}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        onClose={handleClose}
+      >
+        <Alert onClose={handleClose} severity="success">
+          Ваша оценка учтена
+        </Alert>
+      </Snackbar>
       <Button
         type="submit"
         fullWidth
         startIcon={<CheckIcon color="primary" />}
-        onClick={() => console.log({ pass, isDone: 'Done', date: currentDate })}
+        disabled={enabledButtons}
+        onClick={() =>
+          post('/approveTask', {
+            id,
+            isDone: 'Done',
+            date: currentDate,
+          }).then(() => {
+            setSuccessAlert(true);
+            setEnabledButtons(!enabledButtons);
+          })
+        }
       >
         <Typography>Выполнено</Typography>
       </Button>
       <Button
         type="submit"
         fullWidth
+        disabled={enabledButtons}
         startIcon={<MoodBadIcon className={classes.moodBadIcon} />}
         onClick={handleClickOpenPartially}
       >
@@ -48,6 +86,7 @@ const TaskButton = ({ pass }) => {
       <Button
         type="submit"
         fullWidth
+        disabled={enabledButtons}
         startIcon={<DoneOutlineIcon className={classes.doneOutlineIcon} />}
         onClick={handleClickOpenOverDone}
       >
@@ -56,13 +95,20 @@ const TaskButton = ({ pass }) => {
       <Button
         type="submit"
         fullWidth
+        disabled={enabledButtons}
         startIcon={<ErrorIcon className={classes.errorIcon} color="error" />}
-        onClick={() => console.log({ pass, isDone: 'Fail', date: currentDate })}
+        onClick={() =>
+          post('/approveTask', {
+            id,
+            isDone: 'Fail',
+            date: currentDate,
+          }).then(response => console.log(response.data))
+        }
       >
         <Typography>Не выполнено</Typography>
       </Button>
       <ProgressForm
-        pass={pass}
+        id={id}
         description="Отметьте на сколько процентов ваша цель была выполнена"
         isDone="partially"
         min={1}
@@ -74,7 +120,7 @@ const TaskButton = ({ pass }) => {
         currentDate={currentDate}
       />
       <ProgressForm
-        pass={pass}
+        id={id}
         description="Отметьте на сколько процентов ваша цель была перевыполнена"
         isDone="overDone"
         min={101}

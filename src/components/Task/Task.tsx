@@ -4,8 +4,9 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import UseStyles from './Task.style';
 import TaskButton from '../TaskButtons/TaskButton';
+import { TaskProperty } from '../../types';
 
-const Task = ({ pass, name, description, imgUrl }) => {
+const Task = ({ id, name, description, imgUrl, disabled }: TaskProperty) => {
   const classes = UseStyles();
 
   return (
@@ -50,7 +51,7 @@ const Task = ({ pass, name, description, imgUrl }) => {
               </Typography>
             </Grid>
             <Grid item xs={12} sm={12} md={4} lg={3}>
-              <TaskButton pass={pass} />
+              <TaskButton id={id} disabled={disabled} />
             </Grid>
           </Grid>
         </Paper>
