@@ -14,8 +14,7 @@ const ProgressForm = ({
   min,
   max,
   marks,
-  open,
-  setOpen,
+  useIsDialogOpen,
   defaultValue,
   currentDate,
 }) => {
@@ -24,17 +23,19 @@ const ProgressForm = ({
     setValue(newValue);
   };
 
+  const [openOverDone, setOpenOverDone] = useIsDialogOpen();
+
   const handleClose = () => {
-    setOpen(false);
+    setOpenOverDone(false);
   };
   const handleAccept = () => {
     console.log({ id, value, isDone, currentDate });
-    setOpen(false);
+    setOpenOverDone(false);
   };
 
   return (
     <>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={openOverDone} onClose={handleClose}>
         <DialogTitle>Выполнение цели</DialogTitle>
         <DialogContent>
           <DialogContentText>{description}</DialogContentText>

@@ -12,6 +12,8 @@ import ProgressForm from '../ProgressForm/ProgressForm';
 import PartiallyMarksArray from '../ProgressForm/helpers/PartiallyMarksArray';
 import OverDoneMarksArray from '../ProgressForm/helpers/OverDoneMarksArray';
 import { post } from '../../Api';
+import { useIsOverDoneDialogOpen } from '../../utils/hooks/useIsOverDoneDialogOpen';
+import { useIsPartiallyDoneDialogOpen } from '../../utils/hooks/useIsPartiallyDoneDialogOpen';
 
 type TaskButtonProperty = {
   id: number;
@@ -31,14 +33,13 @@ const TaskButton = ({ id, disabled }: TaskButtonProperty) => {
     setSuccessAlert(false);
   };
 
-  const [openPartially, setOpenPartially] = useState(false);
-  const handleClickOpenPartially = () => {
-    setOpenPartially(true);
-  };
+  const [, setIsPartiallyDoneDialogOpen] = useIsPartiallyDoneDialogOpen();
+  const [, setIsOverDoneDialogOpen] = useIsOverDoneDialogOpen();
 
-  const [openOverDone, setOpenOverDone] = useState(false);
-  const handleClickOpenOverDone = () => {
-    setOpenOverDone(true);
+  const handleClickDialogOpen = (
+    setIsDialogOpen: (newState: boolean) => void
+  ) => {
+    setIsDialogOpen(true);
   };
 
   const date = new Date();
@@ -79,7 +80,7 @@ const TaskButton = ({ id, disabled }: TaskButtonProperty) => {
         fullWidth
         disabled={enabledButtons}
         startIcon={<MoodBadIcon className={classes.moodBadIcon} />}
-        onClick={handleClickOpenPartially}
+        onClick={() => handleClickDialogOpen(setIsPartiallyDoneDialogOpen)}
       >
         <Typography className={classes.partiallyDone}>Частично</Typography>
       </Button>
@@ -88,7 +89,7 @@ const TaskButton = ({ id, disabled }: TaskButtonProperty) => {
         fullWidth
         disabled={enabledButtons}
         startIcon={<DoneOutlineIcon className={classes.doneOutlineIcon} />}
-        onClick={handleClickOpenOverDone}
+        onClick={() => handleClickDialogOpen(setIsOverDoneDialogOpen)}
       >
         <Typography>Перевыполнено</Typography>
       </Button>
@@ -114,8 +115,7 @@ const TaskButton = ({ id, disabled }: TaskButtonProperty) => {
         min={1}
         max={99}
         marks={PartiallyMarksArray}
-        open={openPartially}
-        setOpen={setOpenPartially}
+        useIsDialogOpen={useIsPartiallyDoneDialogOpen}
         defaultValue={50}
         currentDate={currentDate}
       />
@@ -126,8 +126,7 @@ const TaskButton = ({ id, disabled }: TaskButtonProperty) => {
         min={101}
         max={200}
         marks={OverDoneMarksArray}
-        open={openOverDone}
-        setOpen={setOpenOverDone}
+        useIsDialogOpen={useIsOverDoneDialogOpen}
         defaultValue={150}
         currentDate={currentDate}
       />
