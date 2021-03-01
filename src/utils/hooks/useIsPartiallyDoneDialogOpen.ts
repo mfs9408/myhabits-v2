@@ -7,7 +7,7 @@ type Returns = [boolean, (newState: boolean) => void];
 
 export const useIsPartiallyDoneDialogOpen = (): Returns => {
   const isPartiallyDoneDialogOpen = useSelector(
-    state => state.meta.setIsPartiallyDialogOpen
+    state => state.meta.isPartiallyDialogOpen
   );
   const dispatch = useDispatch();
   const setIsPartiallyDoneDialogOpen = useCallback(

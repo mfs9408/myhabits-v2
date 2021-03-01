@@ -1,40 +1,40 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import CheckIcon from '@material-ui/icons/Check';
 import Typography from '@material-ui/core/Typography';
 import MoodBadIcon from '@material-ui/icons/MoodBad';
 import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
 import ErrorIcon from '@material-ui/icons/Error';
-import Snackbar from '@material-ui/core/Snackbar';
-import { Alert } from '@material-ui/lab';
-import UseStyles from './TaskButton.style';
 import ProgressForm from '../ProgressForm/ProgressForm';
 import PartiallyMarksArray from '../ProgressForm/helpers/PartiallyMarksArray';
 import OverDoneMarksArray from '../ProgressForm/helpers/OverDoneMarksArray';
-import { post } from '../../Api';
 import { useIsOverDoneDialogOpen } from '../../utils/hooks/useIsOverDoneDialogOpen';
 import { useIsPartiallyDoneDialogOpen } from '../../utils/hooks/useIsPartiallyDoneDialogOpen';
+import { useIsAlertSnackBarSuccessOpen } from '../../utils/hooks/useIsAlertSnackBarSuccessOpen';
+import { tasksActions } from '../../store/tasks';
+import { TaskData } from '../../types';
+import { post } from '../../Api';
+import UseStyles from './TaskButton.style';
 
 type TaskButtonProperty = {
   id: number;
   disabled: boolean;
+  index: number;
 };
 
-const TaskButton = ({ id, disabled }: TaskButtonProperty) => {
+const TaskButton = ({ id, disabled, index }: TaskButtonProperty) => {
   const classes = UseStyles();
+  const dispatch = useDispatch();
 
-  const [successAlert, setSuccessAlert] = useState<boolean>(false);
-  const [enabledButtons, setEnabledButtons] = useState<boolean>(disabled);
-
-  const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setSuccessAlert(false);
-  };
-
+  const [, setIsAlertSnackBarOpen] = useIsAlertSnackBarSuccessOpen();
   const [, setIsPartiallyDoneDialogOpen] = useIsPartiallyDoneDialogOpen();
   const [, setIsOverDoneDialogOpen] = useIsOverDoneDialogOpen();
+
+  const wayToDisableState = {
+    index,
+    disableValue: true,
+  };
 
   const handleClickDialogOpen = (
     setIsDialogOpen: (newState: boolean) => void
@@ -42,34 +42,28 @@ const TaskButton = ({ id, disabled }: TaskButtonProperty) => {
     setIsDialogOpen(true);
   };
 
+  const fetchTargetData = (data: TaskData) => {
+    post('/approveTask', data).then(() => {
+      setIsAlertSnackBarOpen(true);
+      dispatch(tasksActions.setDisabledState(wayToDisableState));
+    });
+  };
+
   const date = new Date();
   const currentDate = date.toLocaleDateString();
 
   return (
     <>
-      <Snackbar
-        open={successAlert}
-        autoHideDuration={2500}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        onClose={handleClose}
-      >
-        <Alert onClose={handleClose} severity="success">
-          Ваша оценка учтена
-        </Alert>
-      </Snackbar>
       <Button
         type="submit"
         fullWidth
         startIcon={<CheckIcon color="primary" />}
-        disabled={enabledButtons}
+        disabled={disabled}
         onClick={() =>
-          post('/approveTask', {
+          fetchTargetData({
             id,
             isDone: 'Done',
             date: currentDate,
-          }).then(() => {
-            setSuccessAlert(true);
-            setEnabledButtons(!enabledButtons);
           })
         }
       >
@@ -78,7 +72,7 @@ const TaskButton = ({ id, disabled }: TaskButtonProperty) => {
       <Button
         type="submit"
         fullWidth
-        disabled={enabledButtons}
+        disabled={disabled}
         startIcon={<MoodBadIcon className={classes.moodBadIcon} />}
         onClick={() => handleClickDialogOpen(setIsPartiallyDoneDialogOpen)}
       >
@@ -87,7 +81,7 @@ const TaskButton = ({ id, disabled }: TaskButtonProperty) => {
       <Button
         type="submit"
         fullWidth
-        disabled={enabledButtons}
+        disabled={disabled}
         startIcon={<DoneOutlineIcon className={classes.doneOutlineIcon} />}
         onClick={() => handleClickDialogOpen(setIsOverDoneDialogOpen)}
       >
@@ -96,14 +90,14 @@ const TaskButton = ({ id, disabled }: TaskButtonProperty) => {
       <Button
         type="submit"
         fullWidth
-        disabled={enabledButtons}
+        disabled={disabled}
         startIcon={<ErrorIcon className={classes.errorIcon} color="error" />}
         onClick={() =>
-          post('/approveTask', {
+          fetchTargetData({
             id,
             isDone: 'Fail',
             date: currentDate,
-          }).then(response => console.log(response.data))
+          })
         }
       >
         <Typography>Не выполнено</Typography>

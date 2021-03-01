@@ -7,7 +7,7 @@ import Template from '../../components/Template';
 import UseStyles from './TasksPage.style';
 import NewTaskButton from '../../components/NewTaskButton/NewTaskButton';
 import { initializeAppAndLoadTasks, useSelector } from '../../store';
-import { TaskProperty } from '../../types';
+import { TaskResponse } from '../../types';
 
 const TasksPage = () => {
   const classes = UseStyles();
@@ -34,9 +34,10 @@ const TasksPage = () => {
         >
           Задания
         </Typography>
-        {tasks.map((task: TaskProperty) => (
+        {tasks.map((task: TaskResponse, index: number) => (
           <Task
             key={task.id}
+            index={index}
             id={task.id}
             name={task.name}
             description={task.description}

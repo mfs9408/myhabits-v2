@@ -3,13 +3,15 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 export interface MetaState {
   isSideBarOpen: boolean;
   isOverDoneDialogOpen: boolean;
-  setIsPartiallyDialogOpen: boolean;
+  isPartiallyDialogOpen: boolean;
+  isAlertSnackBarOpen: boolean;
 }
 
 const initialState: MetaState = {
   isSideBarOpen: true,
   isOverDoneDialogOpen: false,
-  setIsPartiallyDialogOpen: false,
+  isPartiallyDialogOpen: false,
+  isAlertSnackBarOpen: false,
 };
 
 export const { reducer, actions } = createSlice({
@@ -23,7 +25,10 @@ export const { reducer, actions } = createSlice({
       state.isOverDoneDialogOpen = payload;
     },
     setIsPartiallyDialogOpen: (state, { payload }: PayloadAction<boolean>) => {
-      state.setIsPartiallyDialogOpen = payload;
+      state.isPartiallyDialogOpen = payload;
+    },
+    setIsAlertSnackBarOpen: (state, { payload }: PayloadAction<boolean>) => {
+      state.isAlertSnackBarOpen = payload;
     },
   },
 });
