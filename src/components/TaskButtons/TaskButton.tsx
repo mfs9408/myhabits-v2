@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import CheckIcon from '@material-ui/icons/Check';
@@ -6,11 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import MoodBadIcon from '@material-ui/icons/MoodBad';
 import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
 import ErrorIcon from '@material-ui/icons/Error';
-import ProgressForm from '../ProgressForm/ProgressForm';
-import PartiallyMarksArray from '../ProgressForm/helpers/PartiallyMarksArray';
-import OverDoneMarksArray from '../ProgressForm/helpers/OverDoneMarksArray';
-import { useIsOverDoneDialogOpen } from '../../utils/hooks/useIsOverDoneDialogOpen';
-import { useIsPartiallyDoneDialogOpen } from '../../utils/hooks/useIsPartiallyDoneDialogOpen';
 import { useIsAlertSnackBarSuccessOpen } from '../../utils/hooks/useIsAlertSnackBarSuccessOpen';
 import { tasksActions } from '../../store/tasks';
 import { TaskData } from '../../types';
@@ -18,39 +13,42 @@ import { post } from '../../Api';
 import UseStyles from './TaskButton.style';
 
 type TaskButtonProperty = {
-  id: number;
+  currentDate: string;
   disabled: boolean;
   index: number;
+  id: number;
+  isPartiallyFormOpen: boolean;
+  setIsPartiallyFormOpen: Dispatch<SetStateAction<boolean>>;
+  isOverDoneFormOpen: boolean;
+  setIsOverDoneFormOpen: Dispatch<SetStateAction<boolean>>;
 };
 
-const TaskButton = ({ id, disabled, index }: TaskButtonProperty) => {
+const TaskButton = ({
+  id,
+  currentDate,
+  disabled,
+  index,
+  isPartiallyFormOpen,
+  setIsPartiallyFormOpen,
+  isOverDoneFormOpen,
+  setIsOverDoneFormOpen,
+}: TaskButtonProperty) => {
   const classes = UseStyles();
   const dispatch = useDispatch();
 
   const [, setIsAlertSnackBarOpen] = useIsAlertSnackBarSuccessOpen();
-  const [, setIsPartiallyDoneDialogOpen] = useIsPartiallyDoneDialogOpen();
-  const [, setIsOverDoneDialogOpen] = useIsOverDoneDialogOpen();
-
-  const wayToDisableState = {
-    index,
-    disableValue: true,
-  };
-
-  const handleClickDialogOpen = (
-    setIsDialogOpen: (newState: boolean) => void
-  ) => {
-    setIsDialogOpen(true);
-  };
 
   const fetchTargetData = (data: TaskData) => {
-    post('/approveTask', data).then(() => {
+    const wayToDisableState = {
+      index,
+      disableValue: true,
+    };
+
+    post('/approveTask', JSON.stringify(data)).then(() => {
       setIsAlertSnackBarOpen(true);
       dispatch(tasksActions.setDisabledState(wayToDisableState));
     });
   };
-
-  const date = new Date();
-  const currentDate = date.toLocaleDateString();
 
   return (
     <>
@@ -63,7 +61,7 @@ const TaskButton = ({ id, disabled, index }: TaskButtonProperty) => {
           fetchTargetData({
             id,
             isDone: 'Done',
-            date: currentDate,
+            currentDate,
           })
         }
       >
@@ -74,7 +72,9 @@ const TaskButton = ({ id, disabled, index }: TaskButtonProperty) => {
         fullWidth
         disabled={disabled}
         startIcon={<MoodBadIcon className={classes.moodBadIcon} />}
-        onClick={() => handleClickDialogOpen(setIsPartiallyDoneDialogOpen)}
+        onClick={() => {
+          setIsPartiallyFormOpen(!isPartiallyFormOpen);
+        }}
       >
         <Typography className={classes.partiallyDone}>Частично</Typography>
       </Button>
@@ -83,7 +83,9 @@ const TaskButton = ({ id, disabled, index }: TaskButtonProperty) => {
         fullWidth
         disabled={disabled}
         startIcon={<DoneOutlineIcon className={classes.doneOutlineIcon} />}
-        onClick={() => handleClickDialogOpen(setIsOverDoneDialogOpen)}
+        onClick={() => {
+          setIsOverDoneFormOpen(!isOverDoneFormOpen);
+        }}
       >
         <Typography>Перевыполнено</Typography>
       </Button>
@@ -96,34 +98,12 @@ const TaskButton = ({ id, disabled, index }: TaskButtonProperty) => {
           fetchTargetData({
             id,
             isDone: 'Fail',
-            date: currentDate,
+            currentDate,
           })
         }
       >
         <Typography>Не выполнено</Typography>
       </Button>
-      <ProgressForm
-        id={id}
-        description="Отметьте на сколько процентов ваша цель была выполнена"
-        isDone="partially"
-        min={1}
-        max={99}
-        marks={PartiallyMarksArray}
-        useIsDialogOpen={useIsPartiallyDoneDialogOpen}
-        defaultValue={50}
-        currentDate={currentDate}
-      />
-      <ProgressForm
-        id={id}
-        description="Отметьте на сколько процентов ваша цель была перевыполнена"
-        isDone="overDone"
-        min={101}
-        max={200}
-        marks={OverDoneMarksArray}
-        useIsDialogOpen={useIsOverDoneDialogOpen}
-        defaultValue={150}
-        currentDate={currentDate}
-      />
     </>
   );
 };

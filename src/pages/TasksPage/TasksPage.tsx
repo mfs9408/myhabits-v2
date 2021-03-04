@@ -14,12 +14,11 @@ const TasksPage = () => {
   const dispatch = useDispatch();
 
   const isAppInitialized = useSelector(state => state.isAppInitialized);
+  const tasks = useSelector(state => state.tasks);
 
   useEffect(() => {
     dispatch(initializeAppAndLoadTasks());
   }, [dispatch]);
-
-  const tasks = useSelector(state => state.tasks);
 
   if (!isAppInitialized) return <LinearProgress />;
   if (!tasks) return null;
@@ -34,7 +33,7 @@ const TasksPage = () => {
         >
           Задания
         </Typography>
-        {tasks.map((task: TaskResponse, index: number) => (
+        {tasks.map((task: TaskResponse, index) => (
           <Task
             key={task.id}
             index={index}

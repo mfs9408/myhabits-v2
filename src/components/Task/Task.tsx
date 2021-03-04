@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import UseStyles from './Task.style';
+import overDoneMarksData from '../ProgressForm/helpers/overDoneMarksData';
+import partiallyMarksData from '../ProgressForm/helpers/partiallyMarksData';
 import TaskButton from '../TaskButtons/TaskButton';
-import { TaskResponse } from '../../types';
 import AlertSnackBar from '../AlertSnackBar';
+import { TaskResponse } from '../../types';
+import ProgressForm from '../ProgressForm';
+import UseStyles from './Task.style';
 
 type TaskProperty = TaskResponse & {
   index: number;
@@ -21,6 +24,13 @@ const Task = ({
 }: TaskProperty) => {
   const classes = UseStyles();
 
+  const date = new Date();
+  const currentDate = date.toISOString();
+
+  const [isPartiallyFormOpen, setIsPartiallyFormOpen] = useState<boolean>(
+    false
+  );
+  const [isOverDoneFormOpen, setIsOverDoneFormOpen] = useState<boolean>(false);
   return (
     <>
       <Grid item xs={12} sm={10} md={11} className={classes.paperContainer}>
@@ -63,11 +73,36 @@ const Task = ({
               </Typography>
             </Grid>
             <Grid item xs={12} sm={12} md={4} lg={3}>
-              <TaskButton id={id} index={index} disabled={disabled} />
+              <TaskButton
+                id={id}
+                currentDate={currentDate}
+                index={index}
+                isPartiallyFormOpen={isPartiallyFormOpen}
+                setIsPartiallyFormOpen={setIsPartiallyFormOpen}
+                isOverDoneFormOpen={isOverDoneFormOpen}
+                setIsOverDoneFormOpen={setIsOverDoneFormOpen}
+                disabled={disabled}
+              />
             </Grid>
           </Grid>
         </Paper>
         <AlertSnackBar />
+        <ProgressForm
+          id={id}
+          marks={partiallyMarksData}
+          currentDate={currentDate}
+          index={index}
+          isFormOpen={isPartiallyFormOpen}
+          setIsFormOpen={setIsPartiallyFormOpen}
+        />
+        <ProgressForm
+          id={id}
+          index={index}
+          marks={overDoneMarksData}
+          currentDate={currentDate}
+          isFormOpen={isOverDoneFormOpen}
+          setIsFormOpen={setIsOverDoneFormOpen}
+        />
       </Grid>
     </>
   );
