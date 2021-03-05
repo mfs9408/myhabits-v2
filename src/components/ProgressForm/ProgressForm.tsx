@@ -49,12 +49,7 @@ const ProgressForm = ({
 
   return (
     <>
-      <Dialog
-        open={isFormOpen}
-        onClose={() => {
-          setIsFormOpen(!isFormOpen);
-        }}
-      >
+      <Dialog open={isFormOpen} onClose={handleClose}>
         <DialogTitle>Выполнение цели</DialogTitle>
         <DialogContent>
           <DialogContentText>{description}</DialogContentText>
