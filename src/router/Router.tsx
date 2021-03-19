@@ -6,7 +6,7 @@ import LoginPage from '../pages/login';
 import RegistrationPage from '../pages/registration';
 import TasksPage from '../pages/TasksPage/TasksPage';
 import NewTaskPage from '../pages/TasksPage/add/NewTaskPage';
-import SuccessPage from '../pages/SuccessPage/SuccessPage';
+import AchievementsPage from '../pages/AchievementsPage/AchievementsPage';
 
 // @ts-ignore
 const Router = ({ navbar: NavBar, template: Template }) => {
@@ -36,7 +36,7 @@ const Router = ({ navbar: NavBar, template: Template }) => {
           <TasksPage />
         </Route>
         <Route path="/success">
-          <SuccessPage />
+          <AchievementsPage />
         </Route>
       </Switch>
     </BrowserRouter>

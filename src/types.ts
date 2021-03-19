@@ -39,3 +39,15 @@ type Mark = {
   value: number;
   label: string;
 };
+
+export interface AchievementsPropertyGroup
+  extends Array<AchievementsResponse> {}
+
+export interface AchievementsResponse {
+  isDone: string;
+  type: string;
+  name: string;
+  date: string;
+  id: number;
+  color: string;
+}
