@@ -1,9 +1,16 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchTasks } from './tasks/asyncAction';
+import { AsyncThunkAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { AchievementsPropertyGroup, TasksPropertyGroup } from '../types';
 
-export const initializeAppAndLoadTasks = createAsyncThunk(
-  'initializeAppAndLoadTasks',
-  async (arg, { dispatch }) => {
-    await dispatch(fetchTasks());
+export const initializePageAndLoad = createAsyncThunk(
+  'initializeAppAndLoad',
+  async (
+    action: AsyncThunkAction<
+      AchievementsPropertyGroup | TasksPropertyGroup,
+      void,
+      {}
+    >,
+    { dispatch }
+  ) => {
+    await dispatch(action);
   }
 );

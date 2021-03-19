@@ -6,8 +6,11 @@ import Task from '../../components/Task/Task';
 import Template from '../../components/Template';
 import UseStyles from './TasksPage.style';
 import NewTaskButton from '../../components/NewTaskButton/NewTaskButton';
-import { initializeAppAndLoadTasks, useSelector } from '../../store';
+import { initializePageAndLoad, useSelector } from '../../store';
 import { TaskResponse } from '../../types';
+import { fetchTasks } from '../../store/tasks/asyncAction';
+import { isAppInitializedActions } from '../../store/isAppInitialized';
+import NoTasksAndAchievements from '../../components/NoTasksAndAchievements';
 
 const TasksPage = () => {
   const classes = UseStyles();
@@ -17,11 +20,22 @@ const TasksPage = () => {
   const tasks = useSelector(state => state.tasks);
 
   useEffect(() => {
-    dispatch(initializeAppAndLoadTasks());
+    dispatch(initializePageAndLoad(fetchTasks()));
+
+    return () => {
+      dispatch(isAppInitializedActions.setIsAppInitialized());
+    };
   }, [dispatch]);
 
   if (!isAppInitialized) return <LinearProgress />;
   if (!tasks) return null;
+  if (tasks.length === 0)
+    return (
+      <NoTasksAndAchievements
+        header="Ваши задания"
+        body="У вас ещё нет заданий. Создайте их и дерзайте!"
+      />
+    );
 
   return (
     <>
