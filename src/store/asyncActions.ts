@@ -1,9 +1,16 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { AsyncThunkAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { AchievementsPropertyGroup, TasksPropertyGroup } from '../types';
 
-// TODO improve type
 export const initializePageAndLoad = createAsyncThunk(
   'initializeAppAndLoad',
-  async (action: any, { dispatch }) => {
+  async (
+    action: AsyncThunkAction<
+      AchievementsPropertyGroup | TasksPropertyGroup,
+      void,
+      {}
+    >,
+    { dispatch }
+  ) => {
     await dispatch(action);
   }
 );
