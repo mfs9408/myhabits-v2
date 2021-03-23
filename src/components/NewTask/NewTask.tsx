@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import Grid from '@material-ui/core/Grid';
@@ -12,16 +12,34 @@ import CheckIcon from '@material-ui/icons/Check';
 import TextField from '@material-ui/core/TextField';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import Tooltip from '@material-ui/core/Tooltip';
+import { useIsAlertSnackBarSuccessOpen } from '../../utils/hooks/useIsAlertSnackBarSuccessOpen';
+import AlertSnackBar from '../AlertSnackBar';
 import UseStyles from './NewTask.style';
 import DatePicker from '../DatePicker';
+import { post } from '../../Api';
+import { NewTaskType } from '../../types';
 
 const NewTask = () => {
   const classes = UseStyles();
-  const { handleSubmit, errors, control } = useForm();
+  const { handleSubmit, errors, control, reset } = useForm();
   const [opened, setOpened] = useState(false);
   const setOpen = () => setOpened(true);
   const setClose = () => setOpened(false);
-  const onSubmit = data => console.log(data);
+  const [, setIsAlertSnackBarOpen] = useIsAlertSnackBarSuccessOpen();
+
+  const onSubmit: SubmitHandler<NewTaskType> = data => {
+    console.log(data);
+    post('/newtask', JSON.stringify(data)).then(() => {
+      setIsAlertSnackBarOpen(true);
+      reset({
+        name: '',
+        description: '',
+        measure: 'раз',
+        quantity: '',
+        dateTo: null,
+      });
+    });
+  };
 
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -211,7 +229,6 @@ const NewTask = () => {
                     <Controller
                       control={control}
                       name="increment"
-                      type="number"
                       defaultValue={0}
                       rules={{
                         required: 'Укажите шаг',
@@ -254,7 +271,6 @@ const NewTask = () => {
                     </Grid>
                     <Controller
                       control={control}
-                      type="number"
                       name="speed"
                       defaultValue={0}
                       rules={{
@@ -270,6 +286,7 @@ const NewTask = () => {
                           onChange={onChange}
                           inputRef={ref}
                           value={value}
+                          type="number"
                           variant="outlined"
                           error={!!errors.speed}
                           helperText={errors.speed && errors.speed.message}
@@ -315,6 +332,7 @@ const NewTask = () => {
           </form>
         </Paper>
       </Grid>
+      <AlertSnackBar text="Задача добавлена!" />
     </MuiPickersUtilsProvider>
   );
 };

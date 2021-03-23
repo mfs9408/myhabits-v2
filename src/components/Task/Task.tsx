@@ -86,7 +86,7 @@ const Task = ({
             </Grid>
           </Grid>
         </Paper>
-        <AlertSnackBar />
+        <AlertSnackBar text="Ваша оценка учтена" />
         <ProgressForm
           id={id}
           marks={partiallyMarksData}

@@ -51,3 +51,23 @@ export interface AchievementsResponse {
   id: number;
   color: string;
 }
+
+export interface NewTaskType {
+  name: string;
+  description: string;
+  measure: string;
+  quantity: string;
+  dateTo: Date;
+  increment?: string;
+  speed?: string;
+}
+
+export interface NewWholeTaskType {
+  name: string;
+  description: string;
+  measure: string;
+  quantity: string;
+  dateTo: any;
+  increment: string;
+  speed: string;
+}
