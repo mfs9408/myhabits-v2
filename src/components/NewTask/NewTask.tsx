@@ -28,7 +28,6 @@ const NewTask = () => {
   const [, setIsAlertSnackBarOpen] = useIsAlertSnackBarSuccessOpen();
 
   const onSubmit: SubmitHandler<NewTaskType> = data => {
-    console.log(data);
     post('/newtask', JSON.stringify(data)).then(() => {
       setIsAlertSnackBarOpen(true);
       reset({
