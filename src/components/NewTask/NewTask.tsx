@@ -38,8 +38,10 @@ const NewTask = () => {
         dateTo: null,
       });
     });
+    setClose();
   };
 
+  // TODO доделать новую цель
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Grid
