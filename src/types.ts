@@ -4,6 +4,8 @@ export interface TaskResponse {
   id: number;
   name: string;
   description: string;
+  quantity: number;
+  measure: string;
   imgUrl: string;
   disabled: boolean;
 }

@@ -27,14 +27,26 @@ export default makeStyles(theme =>
       width: '100%',
       objectFit: 'cover',
     },
-    typographyDescription: {
-      textAlign: 'left',
+    typography: {
       [theme.breakpoints.up('sm')]: {
         paddingLeft: theme.spacing(1),
       },
     },
-    typographyHeader: {
-      paddingLeft: theme.spacing(1),
+    typographyDescription: {
+      flexGrow: 1,
+      [theme.breakpoints.up('sm')]: {
+        paddingLeft: theme.spacing(1),
+      },
+    },
+    typographyMeasurement: {
+      textAlign: 'left',
+      [theme.breakpoints.up('md')]: {
+        paddingLeft: theme.spacing(1),
+        textAlign: 'right',
+      },
+      [theme.breakpoints.up('sm')]: {
+        paddingLeft: theme.spacing(1),
+      },
     },
   })
 );
