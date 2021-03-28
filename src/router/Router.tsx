@@ -7,6 +7,7 @@ import RegistrationPage from '../pages/registration';
 import TasksPage from '../pages/TasksPage/TasksPage';
 import NewTaskPage from '../pages/TasksPage/add/NewTaskPage';
 import AchievementsPage from '../pages/AchievementsPage/AchievementsPage';
+import EditPage from '../pages/EditPage';
 
 // @ts-ignore
 const Router = ({ navbar: NavBar, template: Template }) => {
@@ -37,6 +38,9 @@ const Router = ({ navbar: NavBar, template: Template }) => {
         </Route>
         <Route path="/success">
           <AchievementsPage />
+        </Route>
+        <Route path="/editTasks">
+          <EditPage />
         </Route>
       </Switch>
     </BrowserRouter>
