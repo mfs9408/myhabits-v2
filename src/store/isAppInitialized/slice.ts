@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchTasks } from '../tasks/asyncAction';
 import { fetchAchievements } from '../achievements/asyncAction';
+import { fetchTasksForEditing } from '../tasksForEditing/asyncAction';
 
 const isAppInitialized = createSlice({
   name: 'isAppInitialized',
@@ -11,6 +12,7 @@ const isAppInitialized = createSlice({
   extraReducers: builder => {
     builder.addCase(fetchTasks.fulfilled, () => true);
     builder.addCase(fetchAchievements.fulfilled, () => true);
+    builder.addCase(fetchTasksForEditing.fulfilled, () => true);
   },
 });
 

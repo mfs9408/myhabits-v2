@@ -8,7 +8,7 @@ export interface TaskResponse {
   disabled: boolean;
 }
 
-export interface TasksPropertyGroup extends Array<TaskResponse> {}
+export type TasksPropertyGroup = TaskResponse[];
 
 export interface TaskData {
   id: number;
@@ -40,8 +40,7 @@ type Mark = {
   label: string;
 };
 
-export interface AchievementsPropertyGroup
-  extends Array<AchievementsResponse> {}
+export type AchievementsPropertyGroup = AchievementsResponse[];
 
 export interface AchievementsResponse {
   isDone: string;
@@ -50,4 +49,19 @@ export interface AchievementsResponse {
   date: string;
   id: number;
   color: string;
+}
+
+export type TasksForEditing = EditingTask[];
+
+export interface EditingTask {
+  id: number;
+  type: string;
+  name: string;
+  dateTo: Date;
+  imgUrl: string;
+  measure: string;
+  quantity: number;
+  description: string;
+  increment?: number;
+  speed?: number;
 }
