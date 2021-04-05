@@ -13,5 +13,10 @@ export default makeStyles((theme: Theme) =>
       width: '100%',
       objectFit: 'cover',
     },
+    grid: {
+      [theme.breakpoints.up('sm')]: {
+        padding: theme.spacing(0, 0, 0, 1),
+      },
+    },
   })
 );

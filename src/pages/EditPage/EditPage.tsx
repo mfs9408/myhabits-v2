@@ -37,11 +37,15 @@ const EditPage = () => {
     );
   }
 
+  // TODO убрать <NewTaskButton /> из страниц
+
   return (
     <Template>
-      <Typography variant="h4" align="center" className={classes.typography}>
-        Редактор заданий
-      </Typography>
+      <Grid item xs={12}>
+        <Typography variant="h4" align="center" className={classes.typography}>
+          Редактор заданий
+        </Typography>
+      </Grid>
       {tasks.map(({ ...task }, index) => (
         <CardForEditing key={index} {...task} />
       ))}

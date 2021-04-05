@@ -5,7 +5,17 @@ import Typography from '@material-ui/core/Typography';
 import useStyles from './CardForEditing.style';
 import { EditingTask } from '../../types';
 
-const CardForEditing = ({ imgUrl, name, type, description }: EditingTask) => {
+const CardForEditing = ({
+  imgUrl,
+  name,
+  type,
+  description,
+  quantity,
+  measure,
+  increment,
+  speed,
+  dateTo,
+}: EditingTask) => {
   const classes = useStyles();
 
   return (
@@ -23,13 +33,13 @@ const CardForEditing = ({ imgUrl, name, type, description }: EditingTask) => {
           >
             <img src={imgUrl} alt="картинка" className={classes.img} />
           </Grid>
-          <Grid container item xs={12} sm={12} md={6} lg={6} direction="column">
+          <Grid container item xs={12} sm={12} md={6} lg={7}>
             <Typography gutterBottom variant="h6" align="left">
               {name}
             </Typography>
             <Typography>Описание: {description}</Typography>
-            <Typography>Тип цели: {type}</Typography>
           </Grid>
+          <Grid item xs={12} sm={12} md={4} lg={3}></Grid>
         </Grid>
       </Paper>
     </Grid>
