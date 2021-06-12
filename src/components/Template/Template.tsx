@@ -7,6 +7,7 @@ import Logo from '../Logo';
 import TemporaryAppBarAppBar from '../TemporaryAppBar';
 import MainMenu from '../MainMenu/MainMenu';
 import UseStyles from './Template.style';
+import NewTaskButton from '../NewTaskButton';
 
 interface OtherProps {}
 
@@ -38,6 +39,7 @@ const Template = ({ children }: TemplateProps) => {
           {children}
         </Grid>
       </main>
+      <NewTaskButton />
     </>
   );
 };

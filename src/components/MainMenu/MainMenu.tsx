@@ -7,6 +7,7 @@ import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
+import EditIcon from '@material-ui/icons/Edit';
 import { Link } from 'react-router-dom';
 import UseStyles from './MainMenu.style';
 import AvatarBox from '../AvatarBox/AvatarBox';
@@ -34,6 +35,16 @@ const MainMenu = () => {
             </ListItemIcon>
             <ListItemText>
               <Typography>Успехи</Typography>
+            </ListItemText>
+          </ListItem>
+        </Link>
+        <Link to="/editTasks" className={classes.link}>
+          <ListItem button>
+            <ListItemIcon>
+              <EditIcon />
+            </ListItemIcon>
+            <ListItemText>
+              <Typography>Редактор заданий</Typography>
             </ListItemText>
           </ListItem>
         </Link>
