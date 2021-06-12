@@ -1,11 +1,15 @@
 import { AsyncThunkAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { AchievementsPropertyGroup, TasksPropertyGroup } from '../types';
+import {
+  AchievementsPropertyGroup,
+  TasksForEditing,
+  TasksPropertyGroup,
+} from '../types';
 
 export const initializePageAndLoad = createAsyncThunk(
   'initializeAppAndLoad',
   async (
     action: AsyncThunkAction<
-      AchievementsPropertyGroup | TasksPropertyGroup,
+      AchievementsPropertyGroup | TasksPropertyGroup | TasksForEditing,
       void,
       {}
     >,
