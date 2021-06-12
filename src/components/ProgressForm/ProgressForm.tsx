@@ -26,8 +26,8 @@ const ProgressForm = ({
   const [, setIsAlertSnackBarOpen] = useIsAlertSnackBarSuccessOpen();
 
   const [value, setValue] = useState(defaultValue);
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  const handleChange = (event: any, newValue: any) => {
+    setValue(newValue as number);
   };
 
   const handleClose = () => {

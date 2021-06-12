@@ -4,6 +4,8 @@ export interface TaskResponse {
   id: number;
   name: string;
   description: string;
+  quantity: number;
+  measure: string;
   imgUrl: string;
   disabled: boolean;
 }
@@ -50,4 +52,14 @@ export interface AchievementsResponse {
   date: string;
   id: number;
   color: string;
+}
+
+export interface NewTaskType {
+  name: string;
+  description: string;
+  measure: string;
+  quantity: string;
+  dateTo: Date;
+  increment?: string;
+  speed?: string;
 }

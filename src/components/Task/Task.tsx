@@ -19,6 +19,8 @@ const Task = ({
   name,
   description,
   imgUrl,
+  quantity,
+  measure,
   disabled,
   index,
 }: TaskProperty) => {
@@ -35,7 +37,7 @@ const Task = ({
     <>
       <Grid item xs={12} sm={10} md={11} className={classes.paperContainer}>
         <Paper className={classes.paper}>
-          <Grid container justify="flex-start" spacing={1}>
+          <Grid container spacing={1}>
             <Grid
               item
               container
@@ -57,19 +59,23 @@ const Task = ({
               lg={7}
             >
               <Typography
-                gutterBottom
                 variant="h6"
                 align="left"
-                className={classes.typographyHeader}
+                className={classes.typography}
               >
                 {name}
               </Typography>
               <Typography
-                id="description"
                 variant="body2"
                 className={classes.typographyDescription}
               >
                 {description}
+              </Typography>
+              <Typography
+                variant="body2"
+                className={classes.typographyMeasurement}
+              >
+                Длительность: {quantity} {measure}
               </Typography>
             </Grid>
             <Grid item xs={12} sm={12} md={4} lg={3}>
@@ -86,7 +92,7 @@ const Task = ({
             </Grid>
           </Grid>
         </Paper>
-        <AlertSnackBar />
+        <AlertSnackBar text="Ваша оценка учтена" />
         <ProgressForm
           id={id}
           marks={partiallyMarksData}
