@@ -3,7 +3,11 @@ import { Alert } from '@material-ui/lab';
 import Snackbar from '@material-ui/core/Snackbar';
 import { useIsAlertSnackBarSuccessOpen } from '../../utils/hooks/useIsAlertSnackBarSuccessOpen';
 
-const AlertSnackBar = () => {
+type AlertSnackBarProps = {
+  text: string;
+};
+
+const AlertSnackBar = ({ text }: AlertSnackBarProps) => {
   const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
     if (reason === 'clickaway') {
       return;
@@ -23,7 +27,7 @@ const AlertSnackBar = () => {
       onClose={handleClose}
     >
       <Alert onClose={handleClose} severity="success">
-        Ваша оценка учтена
+        {text}
       </Alert>
     </Snackbar>
   );

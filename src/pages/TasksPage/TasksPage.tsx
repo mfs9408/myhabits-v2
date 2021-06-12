@@ -52,6 +52,8 @@ const TasksPage = () => {
             key={task.id}
             index={index}
             id={task.id}
+            quantity={task.quantity}
+            measure={task.measure}
             name={task.name}
             description={task.description}
             imgUrl={task.imgUrl}

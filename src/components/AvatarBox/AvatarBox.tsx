@@ -11,7 +11,7 @@ import UseStyles from './AvatarBox.style';
 const AvatarBox = () => {
   const classes = UseStyles();
   const [anchorEl, setAnchorEl] = useState(null);
-  const handleClick = event => {
+  const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
